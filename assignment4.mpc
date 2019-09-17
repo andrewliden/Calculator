@@ -1,0 +1,105 @@
+// $Id: assignment4.mpc
+
+// Honor Pledge:
+//
+// I pledge that I have neither given nor received any help
+// on this assignment.
+// Andrew Liden
+
+project (assignment4) {
+  exename = assignment4
+  install = .
+ 
+  specific (make, gnuace) {
+    compile_flags += -std=c++11
+  }
+
+  Source_Files {
+    driver.cpp
+	Interpreter.cpp
+	Invoker.cpp
+	AbstractInterpreter.cpp
+	TreeInterpreter.cpp
+	TreeInvoker.cpp
+	
+	Visitor.cpp
+	ConcreteVisitor.cpp
+	
+	MathExpression.cpp
+	OperandNode.cpp
+	BinaryOperatorNode.cpp
+	ExpressionBuilder.cpp
+	ConcreteBuilder.cpp
+	AbstractNodeFactory.cpp
+	NodeFactory.cpp
+	ParenthesisNode.cpp
+  }
+
+  Template_Files {
+    Array.cpp
+	Array_Base.cpp
+	Queue.cpp
+	Stack.cpp
+	
+	Command.cpp
+	UnrecognizedCommand.cpp
+	Operand.cpp
+	BinaryCommand.cpp
+	AddCommand.cpp
+	SubtractCommand.cpp
+	ModuloCommand.cpp
+	MultiplyCommand.cpp
+	DivideCommand.cpp
+	LeftParenthesisCommand.cpp
+	RightParenthesisCommand.cpp
+	
+	ConcreteFactory.cpp
+	AbstractFactory.cpp
+  }
+  
+  Header_Files {
+	Array.h
+	Array_Base.h
+	Queue.h
+	Stack.h
+	
+  	Visitor.h
+	ConcreteVisitor.h
+	
+	TreeInvoker.h
+	TreeInterpreter.h
+	AbstractInterpreter.h
+	Interpreter.h
+	Invoker.h
+	CalculationExceptions.h
+	
+	Command.h
+	UnrecognizedCommand.h
+	Operand.h
+	BinaryCommand.h
+	AddCommand.h
+	SubtractCommand.h
+	ModuloCommand.h
+	MultiplyCommand.h
+	DivideCommand.h
+	LeftParenthesisCommand.h
+	RightParenthesisCommand.h
+	AbstractFactory.h
+	
+	MathExpression.h
+	OperandNode.h
+	BinaryOperatorNode.h
+	ExpressionBuilder.h
+	ConcreteBuilder.h
+	AbstractNodeFactory.h
+	NodeFactory.h
+	ParenthesisNode.h
+  }
+  
+  Inline_Files {
+	Array.inl
+	Array_Base.inl
+	Queue.inl
+	Stack.inl
+  }
+}

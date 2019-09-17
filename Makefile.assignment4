@@ -1,0 +1,118 @@
+#----------------------------------------------------------------------------
+#       Macros
+#----------------------------------------------------------------------------
+CC            = gcc
+CXX           = g++
+LD            = $(CXX) $(CCFLAGS) $(CPPFLAGS)
+AR            = ar
+PICFLAGS      = -fPIC
+CPPFLAGS      = $(PICFLAGS) $(GENFLAGS) -std=c++11 -D_REENTRANT
+OBJEXT        = .o
+OUTPUT_OPTION = -o "$@"
+COMPILE.c     = $(CC) $(CFLAGS) $(CPPFLAGS) -c
+COMPILE.cc    = $(CXX) $(CCFLAGS) $(CPPFLAGS) -c
+LDFLAGS       = -L"."
+CCC           = $(CXX)
+MAKEFILE      = Makefile.assignment4
+DEPENDENCIES  = .depend.$(MAKEFILE)
+BTARGETDIR    = ./
+BIN           = $(BTARGETDIR)assignment4$(EXESUFFIX)$(EXEEXT)
+CAT           = cat
+MV            = mv -f
+RM            = rm -rf
+CP            = cp -p
+NUL           = /dev/null
+MKDIR         = mkdir -p
+TESTDIRSTART  = test -d
+TESTDIREND    = ||
+TOUCH         = touch
+EXEEXT        = 
+LIBPREFIX     = lib
+LIBSUFFIX     = 
+GENFLAGS      = -O
+LDLIBS        = -ldl $(subst lib,-l,$(sort $(basename $(notdir $(wildcard /usr/lib/librt.so /lib/librt.so))))) -lpthread
+OBJS          = driver$(OBJEXT) Interpreter$(OBJEXT) Invoker$(OBJEXT) AbstractInterpreter$(OBJEXT) TreeInterpreter$(OBJEXT) TreeInvoker$(OBJEXT) Visitor$(OBJEXT) ConcreteVisitor$(OBJEXT) MathExpression$(OBJEXT) OperandNode$(OBJEXT) BinaryOperatorNode$(OBJEXT) ExpressionBuilder$(OBJEXT) ConcreteBuilder$(OBJEXT) AbstractNodeFactory$(OBJEXT) NodeFactory$(OBJEXT) ParenthesisNode$(OBJEXT)
+SRC           = driver.cpp Interpreter.cpp Invoker.cpp AbstractInterpreter.cpp TreeInterpreter.cpp TreeInvoker.cpp Visitor.cpp ConcreteVisitor.cpp MathExpression.cpp OperandNode.cpp BinaryOperatorNode.cpp ExpressionBuilder.cpp ConcreteBuilder.cpp AbstractNodeFactory.cpp NodeFactory.cpp ParenthesisNode.cpp
+LINK.cc       = $(LD) $(LDFLAGS)
+EXPORTFLAGS   = 
+DEPLIBS       = $(foreach lib, , $(foreach libpath, ., $(wildcard $(libpath)/lib$(lib).a)))
+
+#----------------------------------------------------------------------------
+#       Local targets
+#----------------------------------------------------------------------------
+
+all: $(BIN)
+
+$(BIN): $(OBJS) $(DEPLIBS)
+	@$(TESTDIRSTART) "$(BTARGETDIR)" $(TESTDIREND) $(MKDIR) "$(BTARGETDIR)"
+	$(LINK.cc) $(OBJS) $(LDLIBS) $(OUTPUT_OPTION)
+
+generated: $(GENERATED_DIRTY)
+	@-:
+
+driver$(OBJEXT): driver.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) driver.cpp
+
+Interpreter$(OBJEXT): Interpreter.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Interpreter.cpp
+
+Invoker$(OBJEXT): Invoker.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Invoker.cpp
+
+AbstractInterpreter$(OBJEXT): AbstractInterpreter.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) AbstractInterpreter.cpp
+
+TreeInterpreter$(OBJEXT): TreeInterpreter.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) TreeInterpreter.cpp
+
+TreeInvoker$(OBJEXT): TreeInvoker.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) TreeInvoker.cpp
+
+Visitor$(OBJEXT): Visitor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) Visitor.cpp
+
+ConcreteVisitor$(OBJEXT): ConcreteVisitor.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ConcreteVisitor.cpp
+
+MathExpression$(OBJEXT): MathExpression.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) MathExpression.cpp
+
+OperandNode$(OBJEXT): OperandNode.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) OperandNode.cpp
+
+BinaryOperatorNode$(OBJEXT): BinaryOperatorNode.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) BinaryOperatorNode.cpp
+
+ExpressionBuilder$(OBJEXT): ExpressionBuilder.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ExpressionBuilder.cpp
+
+ConcreteBuilder$(OBJEXT): ConcreteBuilder.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ConcreteBuilder.cpp
+
+AbstractNodeFactory$(OBJEXT): AbstractNodeFactory.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) AbstractNodeFactory.cpp
+
+NodeFactory$(OBJEXT): NodeFactory.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) NodeFactory.cpp
+
+ParenthesisNode$(OBJEXT): ParenthesisNode.cpp
+	$(COMPILE.cc) $(EXPORTFLAGS) $(OUTPUT_OPTION) ParenthesisNode.cpp
+
+clean:
+	-$(RM) $(OBJS)
+
+realclean: clean
+	-$(RM) $(BIN)
+
+check-syntax:
+	$(COMPILE.cc) $(EXPORTFLAGS) -Wall -Wextra -pedantic -fsyntax-only $(CHK_SOURCES)
+
+#----------------------------------------------------------------------------
+#       Dependencies
+#----------------------------------------------------------------------------
+
+
+depend:
+	-$(MPC_ROOT)/depgen.pl  $(CFLAGS) $(CCFLAGS) $(CPPFLAGS) -f $(DEPENDENCIES) $(SRC) 2> $(NUL)
+
+-include $(DEPENDENCIES)
